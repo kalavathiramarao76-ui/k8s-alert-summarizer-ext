@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "K8s Alert Summarizer",
+  "description": "AI-powered Kubernetes alert analysis, runbook generation, and incident correlation",
+  "version": "1.0.0",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "sidePanel",
+    "storage",
+    "tabs",
+    "contextMenus",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "https://sai.sharedllm.com/*",
+    "https://*.pagerduty.com/*",
+    "https://*.grafana.com/*",
+    "https://*.datadoghq.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "K8s Alert Summarizer"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.pagerduty.com/*",
+        "https://*.grafana.com/*",
+        "https://*.datadoghq.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "cors_rules",
+        "enabled": true,
+        "path": "cors_rules.json"
+      }
+    ]
+  }
+}
