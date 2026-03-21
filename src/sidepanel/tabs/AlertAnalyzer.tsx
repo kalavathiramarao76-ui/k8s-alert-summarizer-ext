@@ -4,6 +4,7 @@ import { StreamingOutput } from '../../components/StreamingOutput';
 import { CopyButton } from '../../components/CopyButton';
 import { SeverityBadge, extractSeverity } from '../../components/SeverityBadge';
 import { FavoriteButton } from '../../ui/FavoriteButton';
+import { ExportMenu } from '../../ui/ExportMenu';
 
 const SAMPLE_ALERTS = [
   {
@@ -143,6 +144,11 @@ export function AlertAnalyzer() {
           <CopyButton
             text={extractCommands(output)}
             label="Copy Commands"
+          />
+          <ExportMenu
+            content={output}
+            title="Alert Analysis"
+            severity={severity || undefined}
           />
         </div>
       )}

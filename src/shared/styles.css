@@ -143,4 +143,123 @@
     background: #d97706;
     color: #fff;
   }
+
+  /* ── Command Palette ── */
+  .command-palette-overlay {
+    @apply fixed inset-0 z-[9999] flex items-start justify-center;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    padding-top: 15vh;
+  }
+
+  .command-palette {
+    @apply w-full max-w-md rounded-2xl overflow-hidden shadow-2xl;
+    background: rgba(22, 27, 34, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(48, 54, 61, 0.6);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.05) inset;
+  }
+
+  html.light .command-palette {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(228, 228, 231, 0.8);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0,0,0,0.05) inset;
+  }
+
+  .command-palette-input-wrapper {
+    @apply flex items-center gap-3 px-4 py-3;
+    border-bottom: 1px solid var(--k8s-border);
+  }
+
+  .command-palette-input {
+    @apply flex-1 bg-transparent text-sm text-k8s-text placeholder-k8s-muted outline-none;
+    caret-color: var(--k8s-accent);
+  }
+
+  .command-palette-kbd {
+    @apply inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-mono;
+    background: var(--k8s-bg);
+    border: 1px solid var(--k8s-border);
+    color: var(--k8s-muted);
+  }
+
+  .command-palette-kbd-sm {
+    @apply inline-flex items-center px-1 py-0 rounded text-[10px] font-mono;
+    background: var(--k8s-bg);
+    border: 1px solid var(--k8s-border);
+    color: var(--k8s-muted);
+  }
+
+  .command-palette-list {
+    @apply max-h-[320px] overflow-y-auto py-2;
+  }
+
+  .command-palette-section-label {
+    @apply px-4 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-k8s-muted;
+  }
+
+  .command-palette-item {
+    @apply w-full flex items-center gap-3 px-4 py-2.5 transition-colors duration-100 cursor-pointer;
+    background: transparent;
+    border: none;
+  }
+
+  .command-palette-item:hover,
+  .command-palette-item-active {
+    background: var(--k8s-accent);
+    background: rgba(50, 108, 229, 0.12);
+  }
+
+  .command-palette-item-active {
+    background: rgba(50, 108, 229, 0.18);
+  }
+
+  .command-palette-footer {
+    @apply px-4 py-2.5;
+    border-top: 1px solid var(--k8s-border);
+  }
+
+  /* ── Export Menu ── */
+  .export-menu {
+    @apply absolute right-0 bottom-full mb-2 w-52 rounded-xl overflow-hidden shadow-xl z-50 py-1;
+    background: rgba(22, 27, 34, 0.92);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--k8s-border);
+  }
+
+  html.light .export-menu {
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  .export-menu-item {
+    @apply w-full flex items-center gap-3 px-3 py-2.5 transition-colors duration-100 cursor-pointer;
+    background: transparent;
+    border: none;
+  }
+
+  .export-menu-item:hover {
+    background: rgba(50, 108, 229, 0.12);
+  }
+
+  /* ── Print styles ── */
+  @media print {
+    .command-palette-overlay,
+    .export-menu,
+    nav,
+    .btn-primary,
+    .btn-secondary,
+    .favorite-btn,
+    .theme-toggle-btn,
+    .favorites-count {
+      display: none !important;
+    }
+    body {
+      background: white !important;
+      color: #1a1a1a !important;
+    }
+    .card {
+      border: 1px solid #e5e7eb !important;
+      background: white !important;
+    }
+  }
 }

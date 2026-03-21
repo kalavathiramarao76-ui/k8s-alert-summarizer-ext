@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AlertAnalyzer } from './tabs/AlertAnalyzer';
 import { RunbookGenerator } from './tabs/RunbookGenerator';
 import { AlertCorrelator } from './tabs/AlertCorrelator';
 import { SeverityClassifier } from './tabs/SeverityClassifier';
 import { PerfMonitor } from '../components/PerfMonitor';
-import { ThemeToggle } from '../ui/ThemeToggle';
+import { ThemeToggle, useTheme } from '../ui/ThemeToggle';
+import { CommandPalette } from '../ui/CommandPalette';
 import { getFavoritesCount } from '../shared/favorites';
 
 type Tab = 'analyzer' | 'runbook' | 'correlator' | 'severity';
@@ -19,6 +20,8 @@ const tabs: { id: Tab; label: string; icon: string }[] = [
 export function SidePanelApp() {
   const [activeTab, setActiveTab] = useState<Tab>('analyzer');
   const [favCount, setFavCount] = useState(0);
+  const [showPerfMonitor, setShowPerfMonitor] = useState(true);
+  const { cycleTheme } = useTheme();
 
   const refreshFavCount = () => {
     getFavoritesCount().then(setFavCount);
@@ -37,8 +40,26 @@ export function SidePanelApp() {
     return () => chrome.storage.onChanged.removeListener(listener);
   }, []);
 
+  const handleCommandNavigate = useCallback((target: string) => {
+    if (['analyzer', 'runbook', 'correlator', 'severity'].includes(target)) {
+      setActiveTab(target as Tab);
+    }
+    // 'favorites' and 'settings' are placeholder navigations for future tabs
+  }, []);
+
+  const handleTogglePerfMonitor = useCallback(() => {
+    setShowPerfMonitor((prev) => !prev);
+  }, []);
+
   return (
     <div className="min-h-screen bg-k8s-bg flex flex-col">
+      {/* Command Palette */}
+      <CommandPalette
+        onNavigate={handleCommandNavigate}
+        onToggleTheme={cycleTheme}
+        onTogglePerfMonitor={handleTogglePerfMonitor}
+      />
+
       {/* Header */}
       <header className="bg-k8s-surface border-b border-k8s-border px-4 py-3 flex-shrink-0">
         <div className="flex items-center gap-3">
@@ -49,7 +70,14 @@ export function SidePanelApp() {
           </div>
           <div className="flex-1">
             <h1 className="text-base font-bold text-k8s-text">AlertLens AI</h1>
-            <p className="text-[11px] text-k8s-muted">AI-powered Kubernetes alert workspace</p>
+            <p className="text-[11px] text-k8s-muted">
+              AI-powered Kubernetes alert workspace
+              <span className="hidden sm:inline"> &middot; </span>
+              <kbd className="hidden sm:inline-flex command-palette-kbd text-[9px] ml-1 cursor-pointer"
+                   onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'K', shiftKey: true, ctrlKey: true, bubbles: true }))}>
+                Ctrl+Shift+K
+              </kbd>
+            </p>
           </div>
           <div className="flex items-center gap-2">
             {favCount > 0 && (
@@ -92,7 +120,7 @@ export function SidePanelApp() {
         {activeTab === 'severity' && <SeverityClassifier />}
       </main>
 
-      <PerfMonitor />
+      {showPerfMonitor && <PerfMonitor />}
     </div>
   );
 }

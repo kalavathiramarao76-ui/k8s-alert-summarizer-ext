@@ -3,6 +3,7 @@ import { useStreaming } from '../../shared/useStreaming';
 import { StreamingOutput } from '../../components/StreamingOutput';
 import { CopyButton } from '../../components/CopyButton';
 import { FavoriteButton } from '../../ui/FavoriteButton';
+import { ExportMenu } from '../../ui/ExportMenu';
 
 export function AlertCorrelator() {
   const [alerts, setAlerts] = useState<string[]>(['', '']);
@@ -108,6 +109,10 @@ export function AlertCorrelator() {
           />
           <CopyButton text={output} label="Copy Analysis" />
           <CopyButton text={extractSlackSummary(output)} label="Copy Slack Summary" />
+          <ExportMenu
+            content={output}
+            title={`Alert Correlation — ${validCount} alerts`}
+          />
           <button className="btn-secondary text-xs" onClick={reset}>
             Clear
           </button>

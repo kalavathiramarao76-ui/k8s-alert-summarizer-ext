@@ -3,6 +3,7 @@ import { useStreaming } from '../../shared/useStreaming';
 import { StreamingOutput } from '../../components/StreamingOutput';
 import { SeverityBadge } from '../../components/SeverityBadge';
 import { CopyButton } from '../../components/CopyButton';
+import { ExportMenu } from '../../ui/ExportMenu';
 import type { Severity } from '../../shared/types';
 
 export function SeverityClassifier() {
@@ -150,7 +151,14 @@ export function SeverityClassifier() {
       )}
 
       {output && !isStreaming && (
-        <CopyButton text={output} label="Copy Classification" />
+        <div className="flex flex-wrap gap-2">
+          <CopyButton text={output} label="Copy Classification" />
+          <ExportMenu
+            content={output}
+            title="Severity Classification"
+            severity={parsedSeverity?.severity}
+          />
+        </div>
       )}
     </div>
   );
