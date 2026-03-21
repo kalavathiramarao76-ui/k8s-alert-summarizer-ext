@@ -48,7 +48,7 @@ export function SidePanelApp() {
             </svg>
           </div>
           <div className="flex-1">
-            <h1 className="text-base font-bold text-k8s-text">K8s Alert Summarizer</h1>
+            <h1 className="text-base font-bold text-k8s-text">AlertLens AI</h1>
             <p className="text-[11px] text-k8s-muted">AI-powered Kubernetes alert workspace</p>
           </div>
           <div className="flex items-center gap-2">
