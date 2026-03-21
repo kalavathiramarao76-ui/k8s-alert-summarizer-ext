@@ -1,5 +1,19 @@
-const API_URL = 'https://sai.sharedllm.com/v1/chat/completions';
-const MODEL = 'gpt-oss:120b';
+const DEFAULT_API_URL = 'https://sai.sharedllm.com/v1/chat/completions';
+const DEFAULT_MODEL = 'gpt-oss:120b';
+const SETTINGS_KEY = 'k8s_settings';
+
+async function getApiConfig(): Promise<{ url: string; model: string }> {
+  try {
+    const result = await chrome.storage.local.get(SETTINGS_KEY);
+    const settings = result[SETTINGS_KEY] as { endpointUrl?: string; model?: string } | undefined;
+    return {
+      url: settings?.endpointUrl || DEFAULT_API_URL,
+      model: settings?.model || DEFAULT_MODEL,
+    };
+  } catch {
+    return { url: DEFAULT_API_URL, model: DEFAULT_MODEL };
+  }
+}
 
 export interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
@@ -14,11 +28,12 @@ export async function streamCompletion(
   signal?: AbortSignal
 ): Promise<void> {
   try {
-    const response = await fetch(API_URL, {
+    const config = await getApiConfig();
+    const response = await fetch(config.url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: MODEL,
+        model: config.model,
         messages,
         stream: true,
         temperature: 0.3,
@@ -70,11 +85,12 @@ export async function streamCompletion(
 }
 
 export async function completion(messages: ChatMessage[]): Promise<string> {
-  const response = await fetch(API_URL, {
+  const config = await getApiConfig();
+  const response = await fetch(config.url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: MODEL,
+      model: config.model,
       messages,
       temperature: 0.3,
       max_tokens: 4096,

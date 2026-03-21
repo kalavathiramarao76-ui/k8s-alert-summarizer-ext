@@ -241,6 +241,34 @@
     background: rgba(50, 108, 229, 0.12);
   }
 
+  /* ── Error Boundary (glassmorphism) ── */
+  .error-boundary-card {
+    background: rgba(22, 27, 34, 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(48, 54, 61, 0.6);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.04) inset;
+  }
+
+  html.light .error-boundary-card {
+    background: rgba(255, 255, 255, 0.75);
+    border-color: rgba(228, 228, 231, 0.8);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0,0,0,0.04) inset;
+  }
+
+  /* ── API Error Fallback ── */
+  .api-error-fallback {
+    background: rgba(22, 27, 34, 0.6);
+    backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid rgba(234, 88, 12, 0.25);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  html.light .api-error-fallback {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(234, 88, 12, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  }
+
   /* ── Print styles ── */
   @media print {
     .command-palette-overlay,

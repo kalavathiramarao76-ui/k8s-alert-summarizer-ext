@@ -1,12 +1,14 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
+import { ApiErrorFallback } from '../ui/ApiErrorFallback';
 
 interface Props {
   content: string;
   isStreaming: boolean;
   error?: string | null;
+  onRetry?: () => void;
 }
 
-export function StreamingOutput({ content, isStreaming, error }: Props) {
+export function StreamingOutput({ content, isStreaming, error, onRetry }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -15,7 +17,14 @@ export function StreamingOutput({ content, isStreaming, error }: Props) {
     }
   }, [content]);
 
+  const handleRetry = useCallback(() => {
+    if (onRetry) onRetry();
+  }, [onRetry]);
+
   if (error) {
+    if (onRetry) {
+      return <ApiErrorFallback error={error} onRetry={handleRetry} />;
+    }
     return (
       <div className="card border-red-700 bg-red-950/30">
         <div className="flex items-center gap-2 text-red-400">
