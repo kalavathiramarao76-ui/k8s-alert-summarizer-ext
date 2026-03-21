@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useStreaming } from '../../shared/useStreaming';
 import { StreamingOutput } from '../../components/StreamingOutput';
 import { CopyButton } from '../../components/CopyButton';
+import { FavoriteButton } from '../../ui/FavoriteButton';
 
 export function AlertCorrelator() {
   const [alerts, setAlerts] = useState<string[]>(['', '']);
@@ -99,6 +100,12 @@ export function AlertCorrelator() {
 
       {output && !isStreaming && (
         <div className="flex flex-wrap gap-2">
+          <FavoriteButton
+            type="correlation"
+            title={`Correlation — ${validCount} alerts — ${new Date().toLocaleDateString()}`}
+            content={output}
+            input={alerts.filter((a) => a.trim()).join('\n---\n')}
+          />
           <CopyButton text={output} label="Copy Analysis" />
           <CopyButton text={extractSlackSummary(output)} label="Copy Slack Summary" />
           <button className="btn-secondary text-xs" onClick={reset}>

@@ -1,9 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>K8s Alert Summarizer — Side Panel</title>
+  <script>
+    // FOUC prevention: apply saved theme before paint
+    (function() {
+      try {
+        var key = 'k8s_theme_mode';
+        chrome.storage.local.get(key, function(result) {
+          var mode = result[key] || 'dark';
+          var resolved = mode;
+          if (mode === 'system') {
+            resolved = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          }
+          document.documentElement.className = resolved;
+          document.documentElement.setAttribute('data-theme', resolved);
+        });
+      } catch(e) {
+        document.documentElement.className = 'dark';
+      }
+    })();
+  </script>
 </head>
 <body class="min-h-screen bg-k8s-bg text-k8s-text">
   <div id="root"></div>

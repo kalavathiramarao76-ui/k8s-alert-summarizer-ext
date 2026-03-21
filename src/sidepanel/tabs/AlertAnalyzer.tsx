@@ -3,6 +3,7 @@ import { useStreaming } from '../../shared/useStreaming';
 import { StreamingOutput } from '../../components/StreamingOutput';
 import { CopyButton } from '../../components/CopyButton';
 import { SeverityBadge, extractSeverity } from '../../components/SeverityBadge';
+import { FavoriteButton } from '../../ui/FavoriteButton';
 
 const SAMPLE_ALERTS = [
   {
@@ -131,6 +132,12 @@ export function AlertAnalyzer() {
       {/* Actions */}
       {output && !isStreaming && (
         <div className="flex flex-wrap gap-2">
+          <FavoriteButton
+            type="analysis"
+            title={`Alert Analysis — ${new Date().toLocaleDateString()}`}
+            content={output}
+            input={alertText}
+          />
           <CopyButton text={output} label="Copy Analysis" />
           <CopyButton text={slackOutput} label="Copy for Slack" />
           <CopyButton

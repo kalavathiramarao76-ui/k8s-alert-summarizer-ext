@@ -9,13 +9,13 @@ export default {
     extend: {
       colors: {
         k8s: {
-          bg: '#0f1117',
-          surface: '#161b22',
-          border: '#30363d',
-          accent: '#326ce5',
-          'accent-hover': '#4a85f0',
-          text: '#e6edf3',
-          muted: '#8b949e',
+          bg: 'var(--k8s-bg)',
+          surface: 'var(--k8s-surface)',
+          border: 'var(--k8s-border)',
+          accent: 'var(--k8s-accent)',
+          'accent-hover': 'var(--k8s-accent-hover)',
+          text: 'var(--k8s-text)',
+          muted: 'var(--k8s-muted)',
           p0: '#ff4444',
           p1: '#ff8800',
           p2: '#ffcc00',

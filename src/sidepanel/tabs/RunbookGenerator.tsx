@@ -3,6 +3,7 @@ import { useStreaming } from '../../shared/useStreaming';
 import { StreamingOutput } from '../../components/StreamingOutput';
 import { CopyButton } from '../../components/CopyButton';
 import { K8S_ALERT_TYPES, type K8sAlertType } from '../../shared/types';
+import { FavoriteButton } from '../../ui/FavoriteButton';
 
 const ALERT_TYPE_INFO: Record<K8sAlertType, { desc: string; icon: string }> = {
   KubePodCrashLooping: { desc: 'Pod restarting repeatedly', icon: 'rotate-cw' },
@@ -72,6 +73,12 @@ export function RunbookGenerator() {
           <StreamingOutput content={output} isStreaming={isStreaming} error={error} />
           {output && !isStreaming && (
             <div className="flex gap-2">
+              <FavoriteButton
+                type="runbook"
+                title={`Runbook — ${selectedType || 'Unknown'}`}
+                content={output}
+                input={selectedType || ''}
+              />
               <CopyButton text={output} label="Copy Runbook" />
               <button className="btn-secondary text-xs" onClick={reset}>
                 Clear

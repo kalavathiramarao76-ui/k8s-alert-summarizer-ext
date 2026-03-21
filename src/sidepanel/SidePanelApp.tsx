@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AlertAnalyzer } from './tabs/AlertAnalyzer';
 import { RunbookGenerator } from './tabs/RunbookGenerator';
 import { AlertCorrelator } from './tabs/AlertCorrelator';
 import { SeverityClassifier } from './tabs/SeverityClassifier';
 import { PerfMonitor } from '../components/PerfMonitor';
+import { ThemeToggle } from '../ui/ThemeToggle';
+import { getFavoritesCount } from '../shared/favorites';
 
 type Tab = 'analyzer' | 'runbook' | 'correlator' | 'severity';
 
@@ -16,6 +18,24 @@ const tabs: { id: Tab; label: string; icon: string }[] = [
 
 export function SidePanelApp() {
   const [activeTab, setActiveTab] = useState<Tab>('analyzer');
+  const [favCount, setFavCount] = useState(0);
+
+  const refreshFavCount = () => {
+    getFavoritesCount().then(setFavCount);
+  };
+
+  useEffect(() => {
+    refreshFavCount();
+    // Listen for storage changes to update count
+    const listener = (changes: { [key: string]: chrome.storage.StorageChange }) => {
+      if (changes['k8s_favorites']) {
+        const newVal = changes['k8s_favorites'].newValue;
+        setFavCount(Array.isArray(newVal) ? newVal.length : 0);
+      }
+    };
+    chrome.storage.onChanged.addListener(listener);
+    return () => chrome.storage.onChanged.removeListener(listener);
+  }, []);
 
   return (
     <div className="min-h-screen bg-k8s-bg flex flex-col">
@@ -27,9 +47,17 @@ export function SidePanelApp() {
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
             </svg>
           </div>
-          <div>
+          <div className="flex-1">
             <h1 className="text-base font-bold text-k8s-text">K8s Alert Summarizer</h1>
             <p className="text-[11px] text-k8s-muted">AI-powered Kubernetes alert workspace</p>
+          </div>
+          <div className="flex items-center gap-2">
+            {favCount > 0 && (
+              <span className="favorites-count" title={`${favCount} saved favorite${favCount !== 1 ? 's' : ''}`}>
+                {favCount}
+              </span>
+            )}
+            <ThemeToggle />
           </div>
         </div>
       </header>
