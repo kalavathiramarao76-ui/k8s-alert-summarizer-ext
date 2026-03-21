@@ -180,7 +180,7 @@ export function SettingsPanel() {
           <h3 className="text-sm font-semibold text-k8s-text">About</h3>
         </div>
         <div className="space-y-1 text-xs text-k8s-muted">
-          <p><span className="text-k8s-text font-medium">AlertLens AI</span> v1.0.0</p>
+          <p><span className="text-k8s-text font-medium">KubeSignal</span> v1.0.0</p>
           <p>AI-powered Kubernetes alert analysis, runbook generation, and incident correlation.</p>
           <p className="text-[10px] pt-1 opacity-70">Built for SRE/DevOps teams. Uses OpenAI-compatible APIs for LLM inference.</p>
         </div>

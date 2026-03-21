@@ -35,7 +35,7 @@ export function PopupApp() {
               </svg>
             </div>
             <div>
-              <h1 className="text-sm font-bold text-k8s-text">AlertLens AI</h1>
+              <h1 className="text-sm font-bold text-k8s-text">KubeSignal</h1>
               <p className="text-[10px] text-k8s-muted">AI-powered K8s alert analysis</p>
             </div>
           </div>
@@ -120,5 +120,5 @@ function formatSlackSummary(analysis: string): string {
   const lines = analysis.split('\n').filter((l) => l.trim());
   const severity = lines.find((l) => /P[0-4]/.test(l)) || '';
   const summary = lines.slice(0, 5).join('\n');
-  return `*AlertLens AI — K8s Alert Analysis*\n${severity}\n${summary}`;
+  return `*KubeSignal — K8s Alert Analysis*\n${severity}\n${summary}`;
 }

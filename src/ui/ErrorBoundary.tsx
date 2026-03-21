@@ -23,7 +23,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.setState({ errorInfo });
-    console.error('[AlertLens AI] Uncaught error:', error, errorInfo);
+    console.error('[KubeSignal] Uncaught error:', error, errorInfo);
   }
 
   handleRetry = () => {
@@ -48,7 +48,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             <div>
               <h3 className="text-base font-semibold text-k8s-text mb-1">Something went wrong</h3>
               <p className="text-xs text-k8s-muted leading-relaxed">
-                AlertLens AI encountered an unexpected error. This won't affect your saved data.
+                KubeSignal encountered an unexpected error. This won't affect your saved data.
               </p>
             </div>
 
