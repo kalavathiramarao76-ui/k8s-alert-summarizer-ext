@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KubeSignal - K8s Alert Analyzer | Chrome Web Store</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--accent:#10b981;--accent-dark:#059669;--bg:#0a120f;--card:#121e1a;--card-border:#1f332d;--text:#e0e7e4;--text-muted:#95a8a2}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+  .container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+  .hero{text-align:center;padding:80px 24px 60px;background:linear-gradient(180deg,#0f1e18 0%,var(--bg) 100%);position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 50%,rgba(16,185,129,.08) 0%,transparent 50%);pointer-events:none}
+  .hero-icon{width:88px;height:88px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:42px;margin:0 auto 24px;box-shadow:0 8px 32px rgba(16,185,129,.3)}
+  .hero h1{font-size:48px;font-weight:800;letter-spacing:-1px;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hero .tagline{font-size:20px;color:var(--text-muted);margin:12px 0 8px;font-weight:500}
+  .hero .store-desc{font-size:15px;color:var(--text-muted);max-width:640px;margin:0 auto 28px}
+  .badge{display:inline-block;background:var(--accent);color:#fff;padding:6px 18px;border-radius:20px;font-size:13px;font-weight:600;letter-spacing:.5px}
+
+  .section{padding:60px 24px}
+  .section-title{text-align:center;font-size:32px;font-weight:700;margin-bottom:12px}
+  .section-sub{text-align:center;color:var(--text-muted);margin-bottom:40px;font-size:15px}
+
+  .tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto}
+  .tool-card{background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:28px;transition:transform .2s,box-shadow .2s}
+  .tool-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(16,185,129,.15)}
+  .tool-card .icon{font-size:32px;margin-bottom:12px}
+  .tool-card h3{font-size:17px;font-weight:700;margin-bottom:6px;color:#fff}
+  .tool-card p{font-size:13px;color:var(--text-muted);line-height:1.5}
+  .tool-card .tags{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+  .tool-card .tag{background:rgba(16,185,129,.12);color:var(--accent);padding:3px 10px;border-radius:8px;font-size:11px;font-weight:600}
+
+  .flow{display:flex;align-items:flex-start;justify-content:center;gap:0;max-width:1000px;margin:0 auto;flex-wrap:wrap}
+  .flow-step{text-align:center;flex:1;min-width:160px;max-width:200px;position:relative;padding:0 10px}
+  .flow-step:not(:last-child)::after{content:'';position:absolute;top:28px;right:-10px;width:20px;height:2px;background:var(--accent);opacity:.5}
+  .flow-num{width:56px;height:56px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;margin:0 auto 14px;color:#fff}
+  .flow-step h4{font-size:14px;font-weight:700;margin-bottom:4px;color:#fff}
+  .flow-step p{font-size:12px;color:var(--text-muted)}
+
+  .mock-section{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:1000px;margin:0 auto}
+  .mock{background:#142220;border:1px solid var(--card-border);border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.3)}
+  .mock-bar{background:#0f1a18;padding:8px 14px;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted)}
+  .mock-dot{width:8px;height:8px;border-radius:50%}
+  .mock-dot.r{background:#ef4444}.mock-dot.y{background:#eab308}.mock-dot.g{background:#22c55e}
+  .mock-body{padding:18px}
+  .mock-label{font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .mock-pill{background:rgba(16,185,129,.15);color:var(--accent);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600}
+  .mock-line{height:8px;border-radius:4px;background:rgba(255,255,255,.06)}
+  .mock-line.w60{width:60%}.mock-line.w80{width:80%}.mock-line.w45{width:45%}.mock-line.w70{width:70%}
+  .mock-btn{background:var(--accent);color:#fff;border:none;padding:6px 16px;border-radius:8px;font-size:11px;font-weight:600;margin-top:8px}
+
+  .sev-badge{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;color:#fff;display:inline-block}
+  .sev-badge.p0{background:#dc2626}.sev-badge.p1{background:#ea580c}.sev-badge.p2{background:#d97706}.sev-badge.p3{background:#2563eb}.sev-badge.p4{background:#6b7280}
+
+  .integrations{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:600px;margin:0 auto}
+  .integ{background:var(--card);border:1px solid var(--card-border);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;color:var(--text-muted)}
+
+  .features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:900px;margin:0 auto}
+  .feat{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:16px}
+  .feat .fi{font-size:22px;flex-shrink:0}
+  .feat h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px}
+  .feat p{font-size:12px;color:var(--text-muted)}
+
+  .release{max-width:700px;margin:0 auto}
+  .release-item{border-left:3px solid var(--accent);padding:12px 20px;margin-bottom:16px;background:var(--card);border-radius:0 12px 12px 0}
+  .release-item .ver{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:4px}
+  .release-item p{font-size:13px;color:var(--text-muted)}
+
+  .store-listing{background:#0f1a18;border:2px solid var(--card-border);border-radius:16px;padding:36px;max-width:800px;margin:0 auto}
+  .store-listing h3{font-size:18px;font-weight:700;margin-bottom:16px;color:var(--accent)}
+  .store-listing ul{list-style:none;padding:0}
+  .store-listing li{padding:6px 0;font-size:14px;color:var(--text-muted);border-bottom:1px solid rgba(255,255,255,.04)}
+  .store-listing li::before{content:'✓ ';color:var(--accent);font-weight:700}
+  .copy-hint{text-align:center;margin-top:16px;font-size:12px;color:var(--text-muted);opacity:.6}
+
+  @media(max-width:768px){
+    .tools-grid,.mock-section,.features-grid{grid-template-columns:1fr}
+    .hero h1{font-size:32px}
+    .flow{flex-direction:column;align-items:center}
+    .flow-step::after{display:none}
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-icon">&#9784;</div>
+  <h1>KubeSignal</h1>
+  <p class="tagline">K8s Alert Analyzer</p>
+  <p class="store-desc">AI Kubernetes alert analyzer for SREs. Get instant severity classification, runbooks, alert correlation, and remediation steps.</p>
+  <span class="badge">CHROME EXTENSION</span>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Kubernetes Alerts, Decoded by AI</h2>
+    <p class="section-sub">From raw K8s alerts to actionable runbooks and remediation steps in seconds.</p>
+    <div class="tools-grid">
+      <div class="tool-card">
+        <div class="icon">&#128269;</div>
+        <h3>Alert Analyzer</h3>
+        <p>Full AI analysis: severity, root cause, impact assessment, remediation steps, and kubectl commands.</p>
+        <div class="tags"><span class="tag">Severity</span><span class="tag">Root Cause</span><span class="tag">Impact</span><span class="tag">kubectl</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="icon">&#128214;</div>
+        <h3>Runbook Generator</h3>
+        <p>Auto-generate runbooks for 12 Kubernetes alert types. Step-by-step remediation procedures.</p>
+        <div class="tags"><span class="tag">12 Alert Types</span><span class="tag">Step-by-Step</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="icon">&#128279;</div>
+        <h3>Alert Correlator</h3>
+        <p>Correlate 2-10 alerts together. Detect timelines, patterns, and common root causes.</p>
+        <div class="tags"><span class="tag">2-10 Alerts</span><span class="tag">Timeline</span><span class="tag">Patterns</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="icon">&#127919;</div>
+        <h3>Severity Classifier</h3>
+        <p>P0-P4 severity with confidence percentage. Know exactly how critical each alert is.</p>
+        <div class="tags"><span class="tag">P0-P4</span><span class="tag">Confidence %</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="icon">&#128202;</div>
+        <h3>Performance Monitor</h3>
+        <p>Track analysis speed, API latency, and system performance metrics in real-time.</p>
+        <div class="tags"><span class="tag">Latency</span><span class="tag">Throughput</span><span class="tag">Uptime</span></div>
+      </div>
+      <div class="tool-card">
+        <div class="icon">&#128190;</div>
+        <h3>Export &amp; Favorites</h3>
+        <p>Export reports as Markdown, TXT, or PDF. Save frequently referenced analyses.</p>
+        <div class="tags"><span class="tag">MD</span><span class="tag">TXT</span><span class="tag">PDF</span><span class="tag">Favorites</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:linear-gradient(180deg,rgba(16,185,129,.04),transparent)">
+  <div class="container">
+    <h2 class="section-title">Integrations</h2>
+    <p class="section-sub">Works with the monitoring platforms your team already uses.</p>
+    <div class="integrations">
+      <div class="integ">&#128680; PagerDuty</div>
+      <div class="integ">&#128200; Grafana</div>
+      <div class="integ">&#128021; Datadog</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-sub">From K8s alert to remediation in 4 steps.</p>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <h4>Paste Alert</h4>
+        <p>Paste K8s alert text or extract from PagerDuty/Grafana/Datadog</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <h4>AI Analyzes</h4>
+        <p>AI classifies severity, identifies root cause, and assesses impact</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <h4>Get Runbook</h4>
+        <p>Auto-generated runbook with kubectl commands and steps</p>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <h4>Export &amp; Act</h4>
+        <p>Export as MD/TXT/PDF, save to favorites, or correlate with other alerts</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:linear-gradient(180deg,rgba(16,185,129,.03),transparent)">
+  <div class="container">
+    <h2 class="section-title">See It In Action</h2>
+    <p class="section-sub">Purpose-built for Kubernetes operations.</p>
+    <div class="mock-section">
+      <div class="mock">
+        <div class="mock-bar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>&nbsp; KubeSignal &mdash; Alert Analysis</div>
+        <div class="mock-body">
+          <div class="mock-label">Severity Classification</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+            <span class="sev-badge p1">P1 HIGH</span>
+            <span style="font-size:11px;color:var(--text-muted)">Confidence: 94%</span>
+          </div>
+          <div class="mock-label">Root Cause</div>
+          <div class="mock-line w80" style="margin-bottom:6px"></div>
+          <div class="mock-line w60" style="margin-bottom:14px"></div>
+          <div class="mock-label">Remediation</div>
+          <div style="background:rgba(16,185,129,.08);border-radius:6px;padding:8px;margin-bottom:6px;font-family:monospace;font-size:10px;color:var(--accent)">kubectl get pods -n production</div>
+          <div style="background:rgba(16,185,129,.08);border-radius:6px;padding:8px;font-family:monospace;font-size:10px;color:var(--accent)">kubectl rollout restart deploy/api</div>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="mock-bar"><span class="mock-dot r"></span><span class="mock-dot y"></span><span class="mock-dot g"></span>&nbsp; Alert Correlator</div>
+        <div class="mock-body">
+          <div class="mock-label">Correlated Alerts (4)</div>
+          <div style="margin-bottom:12px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;padding:6px 8px;background:rgba(255,255,255,.03);border-radius:6px"><span class="sev-badge p1" style="font-size:9px;padding:2px 6px">P1</span><span style="font-size:11px;color:var(--text-muted)">OOMKilled: api-server-pod</span><span style="font-size:9px;color:var(--text-muted);margin-left:auto">14:02</span></div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;padding:6px 8px;background:rgba(255,255,255,.03);border-radius:6px"><span class="sev-badge p2" style="font-size:9px;padding:2px 6px">P2</span><span style="font-size:11px;color:var(--text-muted)">High CPU: node-pool-1</span><span style="font-size:9px;color:var(--text-muted);margin-left:auto">14:05</span></div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;padding:6px 8px;background:rgba(255,255,255,.03);border-radius:6px"><span class="sev-badge p1" style="font-size:9px;padding:2px 6px">P1</span><span style="font-size:11px;color:var(--text-muted)">CrashLoopBackOff: worker</span><span style="font-size:9px;color:var(--text-muted);margin-left:auto">14:08</span></div>
+            <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;background:rgba(255,255,255,.03);border-radius:6px"><span class="sev-badge p3" style="font-size:9px;padding:2px 6px">P3</span><span style="font-size:11px;color:var(--text-muted)">PVC Warning: storage-vol</span><span style="font-size:9px;color:var(--text-muted);margin-left:auto">14:12</span></div>
+          </div>
+          <div class="mock-label">Pattern Detected</div>
+          <div class="mock-line w80" style="margin-bottom:4px"></div>
+          <div class="mock-line w60"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Feature Highlights</h2>
+    <p class="section-sub">Everything a Kubernetes SRE needs in one extension.</p>
+    <div class="features-grid">
+      <div class="feat"><span class="fi">&#128269;</span><div><h4>Full Alert Analysis</h4><p>Severity, root cause, impact, remediation, and kubectl commands.</p></div></div>
+      <div class="feat"><span class="fi">&#128214;</span><div><h4>12 Runbook Types</h4><p>Auto-generated runbooks for all common K8s alert categories.</p></div></div>
+      <div class="feat"><span class="fi">&#128279;</span><div><h4>Alert Correlation</h4><p>Correlate 2-10 alerts to find timelines and common root causes.</p></div></div>
+      <div class="feat"><span class="fi">&#127919;</span><div><h4>Confidence Scoring</h4><p>P0-P4 severity with percentage confidence for each classification.</p></div></div>
+      <div class="feat"><span class="fi">&#128190;</span><div><h4>Multi-Format Export</h4><p>Export analysis as Markdown, plain text, or PDF reports.</p></div></div>
+      <div class="feat"><span class="fi">&#128202;</span><div><h4>Performance Monitor</h4><p>Track analysis speed, API latency, and system health metrics.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:linear-gradient(180deg,rgba(16,185,129,.04),transparent)">
+  <div class="container">
+    <h2 class="section-title">What's New</h2>
+    <p class="section-sub">Latest updates and improvements.</p>
+    <div class="release">
+      <div class="release-item"><div class="ver">v1.2.0 &mdash; Latest</div><p>Alert correlator supporting up to 10 alerts. Datadog integration. PDF export. Performance monitoring dashboard.</p></div>
+      <div class="release-item"><div class="ver">v1.1.0</div><p>Runbook generator with 12 K8s alert types. Grafana integration. Favorites system. Confidence scoring.</p></div>
+      <div class="release-item"><div class="ver">v1.0.0</div><p>Initial release with alert analyzer, P0-P4 severity classifier, kubectl remediation, PagerDuty support, and MD/TXT export.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">Chrome Web Store Listing</h2>
+    <p class="section-sub">Copy-paste ready feature list for your store description.</p>
+    <div class="store-listing">
+      <h3>Feature List</h3>
+      <ul>
+        <li>AI-powered Kubernetes alert analysis with severity, root cause, impact, and remediation</li>
+        <li>P0-P4 severity classification with confidence percentage</li>
+        <li>Auto-generated runbooks for 12 Kubernetes alert types</li>
+        <li>Alert correlator: correlate 2-10 alerts to find timelines and patterns</li>
+        <li>kubectl remediation commands generated for each alert</li>
+        <li>Export reports as Markdown, plain text, or PDF</li>
+        <li>Favorites system for frequently referenced analyses</li>
+        <li>Performance monitoring dashboard (latency, throughput, uptime)</li>
+        <li>PagerDuty integration</li>
+        <li>Grafana integration</li>
+        <li>Datadog integration</li>
+        <li>Works with any Kubernetes alert from any monitoring platform</li>
+      </ul>
+      <p class="copy-hint">Select all text above and copy for your Chrome Web Store listing</p>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
