@@ -1,3 +1,5 @@
+import { incrementUsage } from './usage';
+
 const DEFAULT_API_URL = 'https://sai.sharedllm.com/v1/chat/completions';
 const DEFAULT_MODEL = 'gpt-oss:120b';
 const SETTINGS_KEY = 'k8s_settings';
@@ -27,6 +29,7 @@ export async function streamCompletion(
   onError: (error: string) => void,
   signal?: AbortSignal
 ): Promise<void> {
+  incrementUsage();
   try {
     const config = await getApiConfig();
     const response = await fetch(config.url, {
