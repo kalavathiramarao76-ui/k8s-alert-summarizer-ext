@@ -1,37 +1,72 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#10b981"/>
-      <stop offset="100%" stop-color="#047857"/>
+      <stop offset="0%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#064e3b"/>
     </linearGradient>
-    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="rgba(255,255,255,0.2)"/>
-      <stop offset="50%" stop-color="rgba(255,255,255,0)"/>
+    <linearGradient id="bgSheen" x1="0%" y1="0%" x2="40%" y2="40%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
     </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+    <filter id="pulseGlow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
   <!-- Background -->
   <rect width="128" height="128" rx="28" fill="url(#bg)"/>
-  <!-- Shine -->
-  <rect width="128" height="128" rx="28" fill="url(#shine)"/>
-  <!-- Kubernetes-style hexagonal wheel (left portion) -->
-  <polygon points="52,26 74,26 85,46 74,66 52,66 41,46" fill="none" stroke="white" stroke-width="3" stroke-linejoin="round"/>
-  <!-- Inner hexagon -->
-  <polygon points="56,34 70,34 77,46 70,58 56,58 49,46" fill="none" stroke="white" stroke-width="2" stroke-linejoin="round" opacity="0.5"/>
-  <!-- Center dot -->
-  <circle cx="63" cy="46" r="4" fill="white"/>
-  <!-- Spokes from center to vertices -->
-  <line x1="63" y1="42" x2="63" y2="26" stroke="white" stroke-width="2" opacity="0.6"/>
-  <line x1="66.5" y1="48" x2="85" y2="46" stroke="white" stroke-width="2" opacity="0.6"/>
-  <line x1="66.5" y1="44" x2="74" y2="26" stroke="white" stroke-width="2" opacity="0.6"/>
-  <line x1="59.5" y1="44" x2="52" y2="26" stroke="white" stroke-width="2" opacity="0.6"/>
-  <line x1="59.5" y1="48" x2="41" y2="46" stroke="white" stroke-width="2" opacity="0.6"/>
-  <line x1="63" y1="50" x2="63" y2="66" stroke="white" stroke-width="2" opacity="0.6"/>
-  <!-- Signal/pulse wave (right and bottom portion) -->
-  <polyline points="30,88 42,88 48,72 54,100 60,78 66,94 72,84 78,88 98,88" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- Signal dots -->
-  <circle cx="30" cy="88" r="3" fill="white" opacity="0.5"/>
-  <circle cx="98" cy="88" r="3" fill="white"/>
-  <!-- Small radiating arcs from the right dot -->
-  <path d="M102 82 Q108 88 102 94" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-  <path d="M106 78 Q114 88 106 98" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+  <rect width="128" height="128" rx="28" fill="url(#bgSheen)"/>
+  <!-- Subtle grid pattern -->
+  <g stroke="#ffffff" stroke-width="0.3" opacity="0.06">
+    <line x1="20" y1="30" x2="108" y2="30"/>
+    <line x1="20" y1="45" x2="108" y2="45"/>
+    <line x1="20" y1="60" x2="108" y2="60"/>
+    <line x1="20" y1="75" x2="108" y2="75"/>
+    <line x1="20" y1="90" x2="108" y2="90"/>
+    <line x1="30" y1="24" x2="30" y2="104"/>
+    <line x1="48" y1="24" x2="48" y2="104"/>
+    <line x1="66" y1="24" x2="66" y2="104"/>
+    <line x1="84" y1="24" x2="84" y2="104"/>
+    <line x1="102" y1="24" x2="102" y2="104"/>
+  </g>
+  <g filter="url(#shadow)">
+    <!-- Kubernetes helm wheel -->
+    <g transform="translate(48, 64)">
+      <!-- Outer hexagon -->
+      <polygon points="0,-24 20.8,-12 20.8,12 0,24 -20.8,12 -20.8,-12"
+               fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-width="2.2" stroke-linejoin="round" opacity="0.9"/>
+      <!-- Inner hexagon -->
+      <polygon points="0,-10 8.7,-5 8.7,5 0,10 -8.7,5 -8.7,-5"
+               fill="none" stroke="#ffffff" stroke-width="1.5" opacity="0.6"/>
+      <!-- 6 spokes -->
+      <line x1="0" y1="-10" x2="0" y2="-24" stroke="#ffffff" stroke-width="1.8" opacity="0.7"/>
+      <line x1="8.7" y1="-5" x2="20.8" y2="-12" stroke="#ffffff" stroke-width="1.8" opacity="0.7"/>
+      <line x1="8.7" y1="5" x2="20.8" y2="12" stroke="#ffffff" stroke-width="1.8" opacity="0.7"/>
+      <line x1="0" y1="10" x2="0" y2="24" stroke="#ffffff" stroke-width="1.8" opacity="0.7"/>
+      <line x1="-8.7" y1="5" x2="-20.8" y2="12" stroke="#ffffff" stroke-width="1.8" opacity="0.7"/>
+      <line x1="-8.7" y1="-5" x2="-20.8" y2="-12" stroke="#ffffff" stroke-width="1.8" opacity="0.7"/>
+      <!-- Center dot -->
+      <circle cx="0" cy="0" r="3" fill="#ffffff" opacity="0.8"/>
+      <!-- Vertex dots -->
+      <circle cx="0" cy="-24" r="2" fill="#ffffff" opacity="0.5"/>
+      <circle cx="20.8" cy="-12" r="2" fill="#ffffff" opacity="0.5"/>
+      <circle cx="20.8" cy="12" r="2" fill="#ffffff" opacity="0.5"/>
+      <circle cx="0" cy="24" r="2" fill="#ffffff" opacity="0.5"/>
+      <circle cx="-20.8" cy="12" r="2" fill="#ffffff" opacity="0.5"/>
+      <circle cx="-20.8" cy="-12" r="2" fill="#ffffff" opacity="0.5"/>
+    </g>
+    <!-- EKG heartbeat line -->
+    <polyline points="69,64 74,64 77,64 80,64 83,58 86,72 89,48 92,78 95,56 98,64 101,64 104,64"
+              fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+    <!-- Pulse dot at end -->
+    <g filter="url(#pulseGlow)">
+      <circle cx="104" cy="64" r="3" fill="#ffffff" opacity="0.9"/>
+    </g>
+    <!-- Pulse rings -->
+    <circle cx="104" cy="64" r="6" fill="none" stroke="#ffffff" stroke-width="0.8" opacity="0.3"/>
+    <circle cx="104" cy="64" r="9" fill="none" stroke="#ffffff" stroke-width="0.5" opacity="0.15"/>
+  </g>
 </svg>
