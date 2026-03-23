@@ -1,3 +1,5 @@
+<p align="center"><img src="public/icons/logo.svg" width="128" height="128" alt="KubeSignal Logo"></p>
+
 # KubeSignal — Kubernetes Alert Analyzer
 
 ![Version](https://img.shields.io/badge/version-1.0.0-22c55e?style=flat-square)
@@ -134,11 +136,12 @@ k8s-alert-summarizer-ext/
 ## Screenshots
 
 <p align="center">
-  <img src="public/icons/icon128.png" alt="KubeSignal Icon" width="128" />
+  <img src="public/icons/logo.svg" alt="KubeSignal Logo" width="128" />
 </p>
 
 | Icon | Size |
 |------|------|
+| ![Logo](public/icons/logo.svg) | SVG Logo |
 | ![16px](public/icons/icon16.png) | 16x16 |
 | ![48px](public/icons/icon48.png) | 48x48 |
 | ![128px](public/icons/icon128.png) | 128x128 |
